@@ -5,7 +5,7 @@
   <parent>
     <groupId>uk.gov.defra.reach.spring</groupId>
     <artifactId>reach-spring-parent</artifactId>
-    <version>1.6.0</version>
+    <version>1.10.0</version>
   </parent>
   <groupId>uk.gov.defra.reach.file</groupId>
   <artifactId>reach-file-service</artifactId>
@@ -15,10 +15,9 @@
 
   <properties>
     <java.version>11</java.version>
-    <revision>3.8.0</revision>
+    <revision>3.9.0</revision>
     <changelist></changelist>
     <app.insights.version>2.6.2</app.insights.version>
-    <failBuildOnCVSS>4</failBuildOnCVSS>
     <artifactory.url>https://artifactoryv2.azure.defra.cloud/artifactory/CHM-Maven</artifactory.url>
     <jacoco-maven-plugin.version>0.8.5</jacoco-maven-plugin.version>
     <owasp.version>6.3.1</owasp.version>
@@ -27,7 +26,7 @@
     <dependency>
       <groupId>uk.gov.defra.reach.spring</groupId>
       <artifactId>reach-spring-starter</artifactId>
-      <version>1.6.0</version>
+      <version>1.8.0</version>
     </dependency>
     <dependency>
       <groupId>uk.gov.defra.reach.reach-azure-blob-storage</groupId>
@@ -69,27 +68,45 @@
     </plugins>
   </build>
 
-  <profiles>
-    <profile>
-      <id>e2e-tests</id>
-      <properties>
-        <dependency-check.skip>true</dependency-check.skip>
-        <checkstyle.skip>true</checkstyle.skip>
-      </properties>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-surefire-plugin</artifactId>
-            <version>2.22.2</version>
-            <configuration>
-              <skipTests>true</skipTests>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-  </profiles>
+    <profiles>
+        <profile>
+            <id>e2e-tests</id>
+            <properties>
+                <dependency-check.skip>true</dependency-check.skip>
+                <checkstyle.skip>true</checkstyle.skip>
+            </properties>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <version>2.22.2</version>
+                        <configuration>
+                            <skipTests>true</skipTests>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-failsafe-plugin</artifactId>
+                        <version>2.22.2</version>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>integration-test</goal>
+                                    <goal>verify</goal>
+                                </goals>
+                                <configuration>
+                                    <includes>
+                                        <include>**/*IT.java</include>
+                                    </includes>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
   <distributionManagement>
     <repository>

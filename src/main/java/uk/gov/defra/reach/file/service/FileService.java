@@ -114,7 +114,7 @@ public class FileService  {
     try {
       boolean success = containers.get(container).delete(StorageFilename.from(fileName));
       if (!success) {
-        log.error("Could not delete file {}", fileName);
+        throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not delete file " + fileName);
       }
     } catch (InvalidStorageFilenameException e) {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid storage name " + fileName, e);
